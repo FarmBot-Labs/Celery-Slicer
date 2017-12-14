@@ -1,4 +1,4 @@
-export type Block = { __LABEL__: string;[key: string]: string; };
+export type Block = { __KIND__: string;[key: string]: string; };
 
 /** This will be a GenServer in elixir. */
 export class Heap {
@@ -8,27 +8,22 @@ export class Heap {
 
   constructor() {
     this.here = Heap.NULL;
-    this.entries = {
-      [this.here]: { __LABEL__: "NULL" }
-    };
+    this.entries = { [this.here]: { __KIND__: "nothing" } };
   }
 
   /** Allocate a new object in the heap. */
-  allot = (__LABEL__: string): number => {
-    this.entries[++this.here] = { __LABEL__ };
+  allot = (__KIND__: string): number => {
+    this.entries[++this.here] = { __KIND__ };
     return this.here;
   }
 
   put = (address: number, key: string, value: string) => {
     const block = this.entries[address];
-    if (value[0] === "{") {
-      throw new Error("NO!")
-    }
     if (block) {
       block[key] = value;
-    } else {
-      throw new Error("Bad node address: " + address);
+      return;
     }
+    throw new Error("Bad node address: " + address);
   }
 
   dump = (): string => {
