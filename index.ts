@@ -23,8 +23,7 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
     .map((key: string) => {
       const v = s.args[key];
       if (isCeleryScript(v)) {
-        const childAddr = allocate(h, v, parentAddr);
-        h.put(parentAddr, "$" + key, JSON.stringify(childAddr));
+        h.put(parentAddr, "$" + key, JSON.stringify(allocate(h, v, parentAddr)));
       } else {
         h.put(parentAddr, key, JSON.stringify(v));
       }
