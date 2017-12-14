@@ -1,0 +1,12 @@
+{
+  "name": "celery_slicer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/node": "^8.5.1",
+    "farmbot": "5.2.0-rc7",
+    "typescript": "^2.6.2"
+  }
+}

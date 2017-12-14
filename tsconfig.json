@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "strict": false,
+    "lib": [
+      "esnext"
+    ]
+  }
+}
