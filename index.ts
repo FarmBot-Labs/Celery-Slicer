@@ -11,9 +11,10 @@ function doFlatten(h: Heap, s: CeleryNode): Heap {
 
 function allocate(h: Heap, s: CeleryNode, parentAddr: number) {
   const addr = h.allot(s.kind);
-  h.put(addr, "parent", JSON.stringify(parentAddr));
+  h.put(addr, "$parent", JSON.stringify(parentAddr));
   iterateOverArgs(h, s, addr);
   iterateOverBody(h, s, addr);
+  return addr;
 }
 
 function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
@@ -22,7 +23,8 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
     .map((key: string) => {
       const v = s.args[key];
       if (isCeleryScript(v)) {
-        allocate(h, v, parentAddr);
+        const childAddr = allocate(h, v, parentAddr);
+        h.put(parentAddr, "$" + key, JSON.stringify(childAddr));
       } else {
         h.put(parentAddr, key, JSON.stringify(v));
       }
