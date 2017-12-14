@@ -12,8 +12,9 @@ function doFlatten(h: Heap, s: CeleryNode): Heap {
 function allocate(h: Heap, s: CeleryNode, parentAddr: number) {
   const addr = h.allot(s.kind);
   h.put(addr, "$parent", JSON.stringify(parentAddr));
-  iterateOverArgs(h, s, addr);
+  // Body must always come BEFORE args or $child will be wrong
   iterateOverBody(h, s, addr);
+  iterateOverArgs(h, s, addr);
   return addr;
 }
 
@@ -31,7 +32,9 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
 }
 
 function iterateOverBody(heap: Heap, s: CeleryNode, parentAddr: number) {
-  recurseIntoBody(heap, 0, parentAddr, s.body || [] as CeleryNode[]);
+  heap.put(parentAddr, "$body", "" + (parentAddr + 1));
+  const body = s.body || [] as CeleryNode[];
+  recurseIntoBody(heap, 0, parentAddr, body);
 }
 
 function recurseIntoBody(heap: Heap,
