@@ -32,8 +32,8 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
 }
 
 function iterateOverBody(heap: Heap, s: CeleryNode, parentAddr: number) {
-  heap.put(parentAddr, "$body", "" + (parentAddr + 1));
   const body = s.body || [] as CeleryNode[];
+  body.length && heap.put(parentAddr, "$body", "" + (parentAddr + 1));
   recurseIntoBody(heap, 0, parentAddr, body);
 }
 
