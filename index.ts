@@ -1,19 +1,20 @@
 import { CeleryNode, isCeleryScript, Sequence } from "farmbot";
 import { Heap } from "./heap";
 
+/** Entry point. Converts tree shaped CeleryScript to a flat structure */
 export const flatten =
-  (s: CeleryNode): string => doFlatten(new Heap(), s).dump();
+  (node: CeleryNode): string => {
+    const heap = new Heap();
+    allocate(heap, node, Heap.NULL);
+    return heap.dump();
+  };
 
-function doFlatten(h: Heap, s: CeleryNode): Heap {
-  allocate(h, s, 0);
-  return h;
-}
-
-function allocate(h: Heap, s: CeleryNode, parentAddr: number) {
+/** Recurses through a CeleryScript tree and allocates new nodes into the heap */
+function allocate(h: Heap, s: CeleryNode, parentAddr: number): number {
   const addr = h.allot(s.kind);
   h.put(addr, "$parent", JSON.stringify(parentAddr));
   // Body must always come BEFORE args or $child will be wrong
-  iterateOverBody(h, s, addr);
+  iterateOverBody(h, s, addr); // SEE NOTE ABOVE DANGER DANGER
   iterateOverArgs(h, s, addr);
   return addr;
 }
