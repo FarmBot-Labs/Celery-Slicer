@@ -31,8 +31,17 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
 }
 
 function iterateOverBody(heap: Heap, s: CeleryNode, parentAddr: number) {
-  const y = s.body || [] as CeleryNode[];
-  if (y) {
-    y.map(x => allocate(heap, x, parentAddr));
+  recurseIntoBody(heap, 0, parentAddr, s.body || [] as CeleryNode[]);
+}
+
+function recurseIntoBody(heap: Heap,
+  index: number,
+  parent: number,
+  list: CeleryNode[]) {
+  if (list[index]) {
+    const me = allocate(heap, list[index], parent);
+    recurseIntoBody(heap, index + 1, me, list);
+  } else {
+    return;
   }
 }
