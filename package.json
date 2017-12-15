@@ -4,9 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "start": "ts-node 2_typescript_version/try_it.ts"
+  },
   "dependencies": {
     "@types/node": "^8.5.1",
     "farmbot": "5.2.0-rc7",
+    "ts-node": "^4.0.2",
     "typescript": "^2.6.2"
   }
 }

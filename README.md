@@ -84,7 +84,9 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
 
 ## Try It
 
+Reference implementation is in `2_typescript_version/try_it.ts`
+
 ```
 yarn install
-ts-node try_it.ts
+npm start
 ```
