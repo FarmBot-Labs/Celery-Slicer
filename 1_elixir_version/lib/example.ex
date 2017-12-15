@@ -1,6 +1,7 @@
 defmodule SlicerExample do
   def load do
     {:ok, raw} = File.read("../unsliced_examples.json")
-    {:ok, Poison.decode(raw)}
+    {:ok, json} = Poison.decode(raw)
+    json
   end
 end

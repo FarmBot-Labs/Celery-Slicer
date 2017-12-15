@@ -76,6 +76,56 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
 }
 ```
 
+## Elixir Flavored Output
+
+```
+%{
+  0 => %{
+    __KIND__: "NULL"},
+  1 => %{
+      :__KIND__     => "sequence",
+      "$body"       => 2,
+      "$locals"     => 6,
+      "$parent"     => 0,
+      "is_outdated" => false,
+      "label"       => "Move Relative Test",
+      "version"     => 6
+    },
+  2 => %{
+    :__KIND__ => "move_relative",
+    "$parent" => 1,
+    "speed"   => 100,
+    "x"       => 0,
+    "y"       => 100,
+    "z"       => 0
+  },
+  3 => %{
+    :__KIND__ => "move_relative",
+    "$parent" => 2,
+    "speed"   => 100,
+    "x"       => 0,
+    "y"       => -100,
+    "z"       => 0
+  },
+  4 => %{
+    :__KIND__      => "send_message",
+    "$body"        => 5,
+    "$parent"      => 3,
+    "message"      => "Move Relative test complete",
+    "message_type" => "success"
+  },
+  5 => %{
+    :__KIND__      => "channel",
+    "$parent"      => 4,
+    "channel_name" => "toast"
+  },
+  6 => %{
+    :__KIND__ => "scope_declaration",
+    "$parent" => 1
+  }
+}
+```
+
 ## Syntax Notes:
 
  * `$parent`, `$body`, and othe `$vars`: Sometimes a number is more than just a number. Anytime we serialize a reference (pointer), we prepend a `$` to the arg name.

@@ -1,4 +1,10 @@
 defmodule Slicer do
+
+  # Here's a function to load the example .json file.
+  def test_things do
+    flatten(Enum.at(SlicerExample.load, 0))
+  end
+
   # Entry point. Converts tree shaped CeleryScript to a flat structure
   def flatten(node) do
     {:ok, heap} = CSHeap.new()
@@ -6,67 +12,44 @@ defmodule Slicer do
     CSHeap.dump(heap)
   end
 
-  # /** Recurses through a CeleryScript tree and allocates new nodes into the heap */
-  # function allocate(h, s, parentAddr) {
-  #     var addr = h.allot(s.kind);
-  #     h.put(addr, "$parent", JSON.stringify(parentAddr));
-  #     // Body must always come BEFORE args or $child will be wrong
-  #     iterateOverBody(h, s, addr); // SEE NOTE ABOVE DANGER DANGER
-  #     iterateOverArgs(h, s, addr);
-  #     return addr;
-  # }
   def allocate(heap, sequence, parentAddr) do
     {:ok, addr} = CSHeap.allot(heap, sequence["kind"])
-    CSHeap.put(addr, "$parent", parentAddr)
+    CSHeap.put(heap, addr, "🔗parent", parentAddr)
     iterateOverBody(heap, sequence, addr) # *ALWAYS* before iterateOverArgs
     iterateOverArgs(heap, sequence, addr)
     addr
   end
 
-  # function iterateOverArgs(h, s, parentAddr) {
-  #     Object
-  #         .keys(s.args)
-  #         .map(function (key) {
-  #         var v = s.args[key];
-  #         if (isCeleryScript(v)) {
-  #             h.put(parentAddr, "$" + key, JSON.stringify(allocate(h, v, parentAddr)));
-  #         }
-  #         else {
-  #             h.put(parentAddr, key, JSON.stringify(v));
-  #         }
-  #     });
-  # }
-  def iterateOverArgs(heap, sequence, parentAddr) do
-    argss = s["args"]
-    keys = Map.keys()
+  def iterateOverArgs(heap, node, parentAddr) do
+    args = node["args"]
+    keys = Map.keys(args)
     mapper = fn key ->
         v = args[key]
         if isCeleryScript(v) do
-          IO.puts("TODO")
+          CSHeap.put(heap, parentAddr, "🔗" <> key, allocate(heap, v, parentAddr))
         else
-          IO.puts("TODO")
+          CSHeap.put(heap, parentAddr, key, v)
         end
       end
-    you_stopped_here
     Enum.map(keys, mapper)
   end
-# function iterateOverBody(heap, s, parentAddr) {
-#     var body = s.body || [];
-#     body.length && heap.put(parentAddr, "$body", "" + (parentAddr + 1));
-#     recurseIntoBody(heap, 0, parentAddr, body);
-# }
-# function recurseIntoBody(heap, index, parent, list) {
-#     if (list[index]) {
-#         var me = allocate(heap, list[index], parent);
-#         recurseIntoBody(heap, index + 1, me, list);
-#     }
-#     else {
-#         return;
-#     }
-# }
+
+  def iterateOverBody(heap, s, parentAddr) do
+    body = s["body"] || []
+    (length(body) > 0) && CSHeap.put(heap, parentAddr, "🔗body", parentAddr + 1)
+    recurseIntoBody(heap, 0, parentAddr, body)
+  end
+
+  def recurseIntoBody(heap, index, parent, list) do
+    item = Enum.at(list, index)
+    if(item) do
+      me = allocate(heap, item, parent)
+      recurseIntoBody(heap, index + 1, me, list)
+    end
+  end
 
   def isCeleryScript(node = %{"kind" => _kind, "args" => _args}) do
-    true
+    !!node # Is _node ok?
   end
 
   def isCeleryScript(_) do

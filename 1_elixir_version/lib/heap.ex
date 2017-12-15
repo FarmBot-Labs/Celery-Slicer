@@ -6,7 +6,9 @@ defmodule CSHeap do
   end
 
   def init(:ok) do
-    {:ok, [here: @null, data: %{}]}
+    kind = :__KIND__
+    nul  = "NULL"
+    {:ok, [here: @null, data: %{ 0 => %{ kind => nul } }]}
   end
 
   # Allocate a new object in the heap. At a minimum, it must have a __KIND__,
