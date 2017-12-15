@@ -1,13 +1,13 @@
 # Flattening Celery Script
 
-This is a proof of concept for taking a tree of celery script nodes and flattening it so that every nodoe in the tree has a numeric address, similar to pointers in some programming languages.
+This is a proof of concept for taking a tree of celery script nodes and flattening it so that every node in the tree has a numeric address, similar to pointers in some programming languages.
 
 ## Why?
 
  * :star: Makes it easier to resolve variables and closures.
- * Makes it easier to generate stack traces when execution halts.
- * Makes it easier to serialize stat when execution resumes (eg: `Stopped at address 3`)
- * Makes it easier to pause the VM (references needs to be converted to JSON links)
+ * Makes it easier to generate stack traces when execution halts (a tricky problem in the past).
+ * Makes it easier to serialize state when execution resumes (eg: `Stopped at address 3`)
+ * Makes it easier to pause the VM (references are stored as integers, making JSON generation trivial)
 
 ## Before
 
@@ -43,7 +43,7 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
   ]
 }
 ```
-## After
+## After (JSON version)
 
 ```
 {
@@ -128,11 +128,11 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
 
 ## Syntax Notes:
 
- * `$parent`, `$body`, and othe `$vars`: Sometimes a number is more than just a number. Anytime we serialize a reference (pointer), we prepend a `$` to the arg name.
+ * `$parent`, `$body`, and other `$vars`: Sometimes a number is more than just a number. Anytime we serialize a reference (pointer), we prepend a `$` to the arg name.
  * `__KIND__`: Same as `kind` in `CeleryScript`. It's `__SCREAMING__` so you remember that it is not an arg.
  * Location 0: Always `nothing`. Can be used as a null pointer.
 
-## Try It
+## Try It (JS)
 
 Reference implementation is in `2_typescript_version/try_it.ts`
 
@@ -140,3 +140,11 @@ Reference implementation is in `2_typescript_version/try_it.ts`
 yarn install
 npm start
 ```
+
+## Try (IEx)
+
+```
+iex -S mix
+{:ok, ok} = Slicer.test_things
+```
+
