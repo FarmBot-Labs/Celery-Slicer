@@ -81,50 +81,52 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
 ```
 %{
   0 => %{
-    __KIND__: "NULL"},
+    :__KIND__ => "NULL"
+  },
   1 => %{
-      :__KIND__     => "sequence",
-      "$body"       => 2,
-      "$locals"     => 6,
-      "$parent"     => 0,
-      "is_outdated" => false,
-      "label"       => "Move Relative Test",
-      "version"     => 6
-    },
+    :__KIND__ => "sequence",
+    "is_outdated" => false,
+    "label" => "Move Relative Test",
+    "version" => 6,
+    "🔗body" => 2,
+    "🔗locals" => 6,
+    "🔗parent" => 0
+  },
   2 => %{
     :__KIND__ => "move_relative",
-    "$parent" => 1,
-    "speed"   => 100,
-    "x"       => 0,
-    "y"       => 100,
-    "z"       => 0
+    "speed" => 100,
+    "x" => 0,
+    "y" => 100,
+    "z" => 0,
+    "🔗parent" => 1
   },
   3 => %{
     :__KIND__ => "move_relative",
-    "$parent" => 2,
-    "speed"   => 100,
-    "x"       => 0,
-    "y"       => -100,
-    "z"       => 0
+    "speed" => 100,
+    "x" => 0,
+    "y" => -100,
+    "z" => 0,
+    "🔗parent" => 2
   },
   4 => %{
-    :__KIND__      => "send_message",
-    "$body"        => 5,
-    "$parent"      => 3,
-    "message"      => "Move Relative test complete",
-    "message_type" => "success"
+    :__KIND__ => "send_message",
+    "message" => "Move Relative test complete",
+    "message_type" => "success",
+    "🔗body" => 5,
+    "🔗parent" => 3
   },
   5 => %{
-    :__KIND__      => "channel",
-    "$parent"      => 4,
-    "channel_name" => "toast"
+    :__KIND__ => "channel",
+    "channel_name" => "toast",
+    "🔗parent" => 4
   },
   6 => %{
     :__KIND__ => "scope_declaration",
-    "$parent" => 1
+    "🔗parent" => 1
   }
 }
 ```
+
 
 ## Syntax Notes:
 
