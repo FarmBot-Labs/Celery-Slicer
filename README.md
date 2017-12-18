@@ -84,44 +84,44 @@ This is a proof of concept for taking a tree of celery script nodes and flatteni
     :__KIND__ => "NULL"
   },
   1 => %{
-    :__KIND__ => "sequence",
+    :__KIND__     => "sequence",
     "is_outdated" => false,
-    "label" => "Move Relative Test",
-    "version" => 6,
-    "🔗body" => 2,
-    "🔗locals" => 6,
-    "🔗parent" => 0
+    "label"       => "Move Relative Test",
+    "version"     => 6,
+    "🔗body"      => 2,
+    "🔗locals"    => 6,
+    "🔗parent"    => 0
   },
   2 => %{
-    :__KIND__ => "move_relative",
-    "speed" => 100,
-    "x" => 0,
-    "y" => 100,
-    "z" => 0,
+    :__KIND__  => "move_relative",
+    "speed"    => 100,
+    "x"        => 0,
+    "y"        => 100,
+    "z"        => 0,
     "🔗parent" => 1
   },
   3 => %{
-    :__KIND__ => "move_relative",
-    "speed" => 100,
-    "x" => 0,
-    "y" => -100,
-    "z" => 0,
+    :__KIND__  => "move_relative",
+    "speed"    => 100,
+    "x"        => 0,
+    "y"        => -100,
+    "z"        => 0,
     "🔗parent" => 2
   },
   4 => %{
-    :__KIND__ => "send_message",
-    "message" => "Move Relative test complete",
+    :__KIND__      => "send_message",
+    "message"      => "Move Relative test complete",
     "message_type" => "success",
-    "🔗body" => 5,
-    "🔗parent" => 3
+    "🔗body"       => 5,
+    "🔗parent"     => 3
   },
   5 => %{
-    :__KIND__ => "channel",
+    :__KIND__      => "channel",
     "channel_name" => "toast",
-    "🔗parent" => 4
+    "🔗parent"     => 4
   },
   6 => %{
-    :__KIND__ => "scope_declaration",
+    :__KIND__  => "scope_declaration",
     "🔗parent" => 1
   }
 }
