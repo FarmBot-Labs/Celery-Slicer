@@ -39,7 +39,8 @@ defmodule CSHeap do
   end
 
   def handle_call({:put, address, key, value}, _, state) do
-    [{:here, here}, {:data, data}] = state
+    {:ok, here} = Keyword.fetch(state, :here)
+    {:ok, data} = Keyword.fetch(state, :data)
 
     next_entry = Map.merge(data[address], %{ key => value} )
     next_data  = Map.put(data, address, next_entry)
