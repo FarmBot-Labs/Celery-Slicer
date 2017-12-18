@@ -48,11 +48,7 @@ defmodule Slicer do
     end
   end
 
-  def isCeleryScript(node = %{"kind" => _kind, "args" => _args}) do
-    !!node # Is _node ok?
-  end
-
-  def isCeleryScript(_) do
-    false
-  end
+  @compile {:inline, isCeleryScript: 1}
+  def isCeleryScript(%{"kind" => _kind, "args" => _args}), do: true
+  def isCeleryScript(_), do: false
 end
