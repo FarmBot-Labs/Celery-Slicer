@@ -43,8 +43,12 @@ defmodule Slicer do
   def recurse_into_body(heap, index, parent, list) do
     item = Enum.at(list, index)
     if(item) do
-      me = allocate(heap, item, parent)
-      recurse_into_body(heap, index + 1, me, list)
+      me           = allocate(heap, item, parent)
+      next_index   = index + 1
+      next_item    = Enum.at(list, next_index)
+      next_address = if (next_item), do: me + 1, else: 0
+      CSHeap.put(heap, me, "🔗next", next_address)
+      recurse_into_body(heap, next_index, me, list)
     end
   end
 
