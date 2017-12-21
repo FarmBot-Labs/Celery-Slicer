@@ -12,8 +12,8 @@ export const flatten =
 /** Recurses through a CeleryScript tree and allocates new nodes into the heap */
 function allocate(h: Heap, s: CeleryNode, parentAddr: number): number {
   const addr = h.allot(s.kind);
-  h.put(addr, "$parent", JSON.stringify(parentAddr));
-  // Body must always come BEFORE args or $child will be wrong
+  h.put(addr, "🔗parent", JSON.stringify(parentAddr));
+  // Body must always come BEFORE args or 🔗child will be wrong
   iterateOverBody(h, s, addr); // SEE NOTE ABOVE DANGER DANGER
   iterateOverArgs(h, s, addr);
   return addr;
@@ -25,7 +25,7 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
     .map((key: string) => {
       const v = s.args[key];
       if (isCeleryScript(v)) {
-        h.put(parentAddr, "$" + key, JSON.stringify(allocate(h, v, parentAddr)));
+        h.put(parentAddr, "🔗" + key, JSON.stringify(allocate(h, v, parentAddr)));
       } else {
         h.put(parentAddr, key, JSON.stringify(v));
       }
@@ -34,7 +34,7 @@ function iterateOverArgs(h: Heap, s: CeleryNode, parentAddr: number) {
 
 function iterateOverBody(heap: Heap, s: CeleryNode, parentAddr: number) {
   const body = s.body || [] as CeleryNode[];
-  body.length && heap.put(parentAddr, "$body", "" + (parentAddr + 1));
+  body.length && heap.put(parentAddr, "🔗body", "" + (parentAddr + 1));
   recurseIntoBody(heap, 0, parentAddr, body);
 }
 
@@ -44,8 +44,13 @@ function recurseIntoBody(heap: Heap,
   list: CeleryNode[]) {
   if (list[index]) {
     const me = allocate(heap, list[index], parent);
-    recurseIntoBody(heap, index + 1, me, list);
+    const nextIndex = index + 1;
+    const nextItem = list[nextIndex];
+    const next_address = (nextItem) ? (me + 1) : 0
+    heap.put(me, "🔗next", "" + next_address);
+    recurseIntoBody(heap, nextIndex, me, list);
   } else {
     return;
   }
+
 }
