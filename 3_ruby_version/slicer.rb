@@ -10,8 +10,8 @@ module CeleryScript
     LINK   = "🔗"
     # Points to the originator of an `arg` or `body` node.
     PARENT = LINK + "parent"
-    BODY   = LINK + "body_starts_at"
-    NEXT   = LINK + "next_body_item"
+    BODY   = LINK + "body"
+    NEXT   = LINK + "next"
     KIND   = :__KIND__
 
     # Keys that primary nodes must have
