@@ -143,10 +143,15 @@ yarn install
 npm start
 ```
 
-## Try (IEx)
+## Try It (IEx)
 
 ```
 iex -S mix
 {:ok, ok} = Slicer.test_things
 ```
 
+## Try It (Ruby)
+
+```
+ruby 3_ruby_version/demo.rb
+```

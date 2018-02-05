@@ -2,12 +2,11 @@ import { CeleryNode, isCeleryScript, Sequence } from "farmbot";
 import { Heap } from "./heap";
 
 /** Entry point. Converts tree shaped CeleryScript to a flat structure */
-export const flatten =
-  (node: CeleryNode): string => {
-    const heap = new Heap();
-    allocate(heap, node, Heap.NULL);
-    return heap.dump();
-  };
+export const flatten = (node: CeleryNode): string => {
+  const heap = new Heap();
+  allocate(heap, node, Heap.NULL);
+  return heap.dump();
+};
 
 /** Recurses through a CeleryScript tree and allocates new nodes into the heap */
 function allocate(h: Heap, s: CeleryNode, parentAddr: number): number {
